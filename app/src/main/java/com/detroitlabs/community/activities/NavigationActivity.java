@@ -1,10 +1,13 @@
-package com.detroitlabs.community;
+package com.detroitlabs.community.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.detroitlabs.community.fragments.NavigationDrawerFragment;
+import com.detroitlabs.community.R;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
