@@ -211,12 +211,17 @@ public class NavigationActivity extends BaseActivity implements
 
     RestCallback<List<Problem>> problemsCallback = new RestCallback<List<Problem>>(){
         @Override
-        public void onSuccess(List<Problem> response){
+        public void onSuccess(final List<Problem> response){
             problems = new ArrayList<Problem>(response);
             if (hasMap()) {
                 populateMap();
             } else {
-                problemListFragment.updateProblemList(response);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        problemListFragment.updateProblemList(response);
+                    }
+                });
             }
         }
 
