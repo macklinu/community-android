@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.detroitlabs.community.R;
 import com.detroitlabs.community.api.RestApi;
+import com.detroitlabs.community.model.Comment;
 import com.detroitlabs.community.model.Event;
 import com.detroitlabs.community.model.Problem;
 import com.detroitlabs.community.utils.MapTimer;
@@ -64,7 +65,7 @@ public class EventDetailsFragment extends Fragment implements OnMapReadyListener
         description.setText(event.getDescription());
         startTime.setText(new DateTime(event.getStartTime()).toString("mm/dd/yyyy"));
         endTime.setText(new DateTime(event.getEndTime()).toString("mm/dd/yyyy"));
-        comments.setAdapter(new ArrayAdapter<>(
+        comments.setAdapter(new ArrayAdapter<Comment>(
                         getActivity(),
                         android.R.layout.simple_list_item_activated_1,
                         android.R.id.text1,
