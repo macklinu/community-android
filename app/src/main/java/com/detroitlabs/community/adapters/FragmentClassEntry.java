@@ -1,22 +1,19 @@
 package com.detroitlabs.community.adapters;
 
-import android.app.Fragment;
-
 public class FragmentClassEntry {
     private final String displayString;
-    private final Class<? extends Fragment> clazz;
+    private final Class fragment;
 
-    public FragmentClassEntry(String displayString, Class<? extends Fragment> clazz) {
+    public FragmentClassEntry(String displayString, Class fragment) {
         this.displayString = displayString;
-        this.clazz = clazz;
+        this.fragment = fragment;
     }
 
-    public Class<? extends Fragment> getFragmentClass() {
-        return clazz;
-    }
-
-    @Override
-    public String toString() {
+    public String getDisplayString() {
         return displayString;
+    }
+
+    public Class getFragment() {
+        return fragment;
     }
 }

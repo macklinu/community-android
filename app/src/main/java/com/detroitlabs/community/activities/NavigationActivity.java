@@ -6,12 +6,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.detroitlabs.community.R;
+import com.detroitlabs.community.adapters.FragmentClassEntry;
 import com.detroitlabs.community.api.RestApi;
 import com.detroitlabs.community.api.RestCallback;
 import com.detroitlabs.community.fragments.CreateProblemFragment_;
 import com.detroitlabs.community.fragments.NavigationDrawerFragment;
 import com.detroitlabs.community.fragments.ProblemFragment;
 import com.detroitlabs.community.fragments.ProblemFragment_;
+import com.detroitlabs.community.fragments.ProblemListFragment;
 import com.detroitlabs.community.managers.LocationManager;
 import com.detroitlabs.community.managers.LocationManager.OnLocationReceivedListener;
 import com.detroitlabs.community.managers.MarkerMaker;
@@ -31,6 +33,7 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.UiThread;
 import org.springframework.web.client.RestClientException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -56,24 +59,25 @@ public class NavigationActivity extends BaseActivity implements
     NavigationDrawerFragment drawerFragment;
 
     MapFragment mapFragment;
+    ProblemListFragment problemListFragment;
 
     @Bean LocationManager locationManager;
 
     private Timer setMapOptionsTimer;
     @Bean RestApi api;
 
+    private List<Problem> problems = new ArrayList<Problem>();
+    private LatLng location = new LatLng(0, 0);
+
     @AfterViews
     void afterViews() {
         title = getTitle();
 
         // Set up the drawer.
-        drawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+        drawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        mapFragment = new MapFragment();
-        changeFragment(mapFragment, true);
-        setUpMap();
+        locationManager.setOnLocationReceivedListener(this);
+        locationManager.onStart();
     }
 
     /**
@@ -101,8 +105,18 @@ public class NavigationActivity extends BaseActivity implements
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
+    public void onNavigationDrawerItemSelected(FragmentClassEntry fragmentClassEntry) {
+
+        if (fragmentClassEntry.getFragment().getName().equals(MapFragment.class.getName())) {
+            mapFragment = new MapFragment();
+            changeFragment(mapFragment, false);
+            setUpMap();
+        } else if (fragmentClassEntry.getFragment().getName().equals(ProblemListFragment.class.getName())) {
+            problemListFragment = new ProblemListFragment();
+            changeFragment(problemListFragment, false);
+            mapFragment = null;
+        }
+
     }
 
     @Override
@@ -153,25 +167,38 @@ public class NavigationActivity extends BaseActivity implements
 
     @Override
     public void onLocationReceived(LatLng location){
+        this.location = location;
         locationManager.setOnLocationReceivedListener(null);
-        mapFragment.getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
+        updateMapCamera(location);
         api.getProblemsByLocation(location.latitude, location.longitude, problemsCallback);
     }
 
+    private void updateMapCamera(LatLng location) {
+        if (hasMap()) {
+            mapFragment.getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
+        }
+    }
+
     private boolean isMapReady() {
-        return mapFragment.getMap() != null;
+        return hasMap() && mapFragment.getMap() != null;
     }
 
     private void configureMap() {
-        GoogleMap map = mapFragment.getMap();
-        map.setMyLocationEnabled(true);
-        locationManager.setOnLocationReceivedListener(this);
-        locationManager.onStart();
+        if (hasMap()) {
+            GoogleMap map = mapFragment.getMap();
+            map.setMyLocationEnabled(true);
+            updateMapCamera(this.location);
+            populateMap();
+        }
+    }
+
+    private boolean hasMap() {
+        return mapFragment != null;
     }
 
     @UiThread
-    public void populateMap(List<Problem> response){
-        MarkerMaker markerMaker = new MarkerMaker(mapFragment.getMap(), response, new OnProblemClickedListener(){
+    public void populateMap(){
+        MarkerMaker markerMaker = new MarkerMaker(mapFragment.getMap(), problems, new OnProblemClickedListener(){
             @Override
             public void onProblemClicked(Problem problem){
                 ProblemFragment pf = new ProblemFragment_();
@@ -185,7 +212,12 @@ public class NavigationActivity extends BaseActivity implements
     RestCallback<List<Problem>> problemsCallback = new RestCallback<List<Problem>>(){
         @Override
         public void onSuccess(List<Problem> response){
-            populateMap(response);
+            problems = response;
+            if (hasMap()) {
+                populateMap();
+            } else {
+                problemListFragment.updateProblemList(response);
+            }
         }
 
         @Override
