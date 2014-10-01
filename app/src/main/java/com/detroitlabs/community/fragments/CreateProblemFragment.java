@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.location.Location;
 import android.net.Uri;
 import android.text.Editable;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +38,7 @@ import static android.content.pm.PackageManager.FEATURE_CAMERA;
 import static android.os.Environment.DIRECTORY_DCIM;
 import static android.os.Environment.getExternalStoragePublicDirectory;
 import static android.view.View.GONE;
+import static android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_SEND;
 import static com.detroitlabs.community.utils.Dialogger.showWebRequestErrorDialog;
 
@@ -93,6 +95,8 @@ public class CreateProblemFragment extends Fragment implements RestCallback<Prob
         final File storageDirectory = getExternalStoragePublicDirectory(DIRECTORY_DCIM);
         captureRequest = new CaptureRequest(getActivity(), storageDirectory, null);
         image.setVisibility(GONE);
+
+        getActivity().getWindow().setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE);
     }
 
     @Click
