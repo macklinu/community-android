@@ -2,7 +2,7 @@ package com.detroitlabs.community.fragments;
 
 
 import android.app.Fragment;
-import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -27,16 +27,23 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.EditorAction;
 import org.androidannotations.annotations.FragmentArg;
+import org.androidannotations.annotations.SystemService;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.joda.time.DateTime;
 import org.springframework.web.client.RestClientException;
 
 import static android.view.View.GONE;
+import static android.view.inputmethod.EditorInfo.IME_ACTION_SEND;
 import static com.detroitlabs.community.utils.MapTimer.OnMapReadyListener;
 
 @EFragment(R.layout.fragment_event_details)
 public class EventDetailsFragment extends Fragment implements OnMapReadyListener, RestCallback<Comment> {
+
+    private static final String DATE_PATTERN = "MMMM d h:mm";
+
+    @SystemService
+    InputMethodManager inputMethodManager;
 
     @Bean
     AppPrefs appPrefs;
@@ -73,8 +80,8 @@ public class EventDetailsFragment extends Fragment implements OnMapReadyListener
     void afterViews() {
         new MapTimer(map, this);
         description.setText(event.getDescription());
-        startTime.setText(new DateTime(event.getStartTime()).toString("mm/dd/yyyy"));
-        endTime.setText(new DateTime(event.getEndTime()).toString("mm/dd/yyyy"));
+        startTime.setText("Start time: " + new DateTime(event.getStartTime()).toString(DATE_PATTERN));
+        endTime.setText("End time: " + new DateTime(event.getEndTime()).toString(DATE_PATTERN));
         adapter = new ArrayAdapter<Comment>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
@@ -86,7 +93,8 @@ public class EventDetailsFragment extends Fragment implements OnMapReadyListener
 
     @EditorAction(R.id.commentEntry)
     boolean onCommentEntry(int actionId) {
-        if (actionId == EditorInfo.IME_ACTION_SEND) {
+        if (actionId == IME_ACTION_SEND) {
+            inputMethodManager.hideSoftInputFromWindow(description.getWindowToken(), 0);
             final Comment comment = new Comment.Builder()
                     .message(commentEntry.getText().toString())
                     .id(appPrefs.getUser().getId())
@@ -111,6 +119,7 @@ public class EventDetailsFragment extends Fragment implements OnMapReadyListener
     @Override
     @UiThread
     public void onSuccess(Comment comment) {
+        commentEntry.setText(null);
         adapter.add(comment);
         adapter.notifyDataSetChanged();
     }

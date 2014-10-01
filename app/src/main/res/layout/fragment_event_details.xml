@@ -20,21 +20,19 @@
         android:id="@+id/startTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/description"
-        android:layout_alignParentLeft="true"/>
+        android:layout_below="@+id/description"/>
 
     <TextView
         android:id="@+id/endTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/description"
-        android:layout_alignParentRight="true"/>
+        android:layout_below="@+id/startTime"/>
 
     <ListView
         android:id="@+id/comments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/startTime"/>
+        android:layout_below="@+id/endTime"/>
 
     <EditText
         android:id="@+id/commentEntry"
@@ -42,6 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:hint="Add a comment"
+        android:inputType="text"
         android:imeOptions="actionSend"/>
 
 </RelativeLayout>
