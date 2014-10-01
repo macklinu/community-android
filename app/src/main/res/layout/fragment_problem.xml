@@ -4,7 +4,6 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="15dp"
         android:background="@color/apptheme_color">
     <ImageView android:layout_width="match_parent"
                android:layout_height="250dp"
@@ -13,6 +12,7 @@
     <TextView android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_below="@+id/problemPhoto"
+              android:layout_margin="15dp"
               android:id="@+id/description"
               android:textColor="@android:color/white"
               tools:text="SOME TEXT ABOUT THE PROBLEM"
