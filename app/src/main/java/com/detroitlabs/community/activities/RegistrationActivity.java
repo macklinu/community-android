@@ -1,7 +1,6 @@
 package com.detroitlabs.community.activities;
 
 import android.app.Activity;
-import android.util.Log;
 import android.widget.EditText;
 
 import com.detroitlabs.community.R;
@@ -10,6 +9,7 @@ import com.detroitlabs.community.api.RestCallback;
 import com.detroitlabs.community.exceptions.RegistrationValidationException;
 import com.detroitlabs.community.model.User;
 import com.detroitlabs.community.prefs.AppPrefs;
+import com.detroitlabs.community.utils.SnoopLogg;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Bean;
@@ -18,6 +18,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import static android.util.Patterns.EMAIL_ADDRESS;
+import static com.detroitlabs.community.utils.Dialogger.showWebRequestErrorDialog;
 
 @EActivity(R.layout.activity_registration)
 public class RegistrationActivity extends Activity implements RestCallback<User> {
@@ -79,7 +80,8 @@ public class RegistrationActivity extends Activity implements RestCallback<User>
 
     @Override
     public void onFailure(Exception e) {
-        Log.e(RegistrationActivity.class.getName(), "RestApi#register error", e);
+        SnoopLogg.e(e);
+        showWebRequestErrorDialog(this);
     }
 
     private String validateName() throws RegistrationValidationException {
