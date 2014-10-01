@@ -15,7 +15,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.detroitlabs.community.activities.NavigationActivity_"
-            android:label="@string/app_name"/>
+            android:launchMode="singleTop"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name="com.detroitlabs.community.activities.RegistrationActivity_"
             android:label="@string/app_name"
