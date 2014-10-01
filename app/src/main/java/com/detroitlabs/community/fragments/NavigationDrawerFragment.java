@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.detroitlabs.community.R;
 import com.detroitlabs.community.activities.UploadProblemActivity_;
@@ -92,8 +92,10 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        drawerListView = (ListView) inflater.inflate(
+        final View view = inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
+
+        drawerListView = (ListView) view.findViewById(R.id.drawerListView);
         drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -110,7 +112,7 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section3),
                 }));
         drawerListView.setItemChecked(currentSelectedPosition, true);
-        return drawerListView;
+        return view;
     }
 
     public boolean isDrawerOpen() {

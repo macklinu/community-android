@@ -30,7 +30,7 @@ public class UploadProblemActivity extends Activity {
 
     @ViewById
     EditText description;
-    
+
     private CaptureRequest captureRequest;
 
     @AfterViews

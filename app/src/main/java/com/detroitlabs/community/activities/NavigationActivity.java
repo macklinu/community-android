@@ -2,10 +2,12 @@ package com.detroitlabs.community.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.detroitlabs.community.adapters.FragmentClassEntry;
 import com.detroitlabs.community.fragments.NavigationDrawerFragment;
 import com.detroitlabs.community.R;
 
@@ -14,7 +16,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
 
 @EActivity(R.layout.activity_navigation)
-public class NavigationActivity extends Activity
+public class NavigationActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
