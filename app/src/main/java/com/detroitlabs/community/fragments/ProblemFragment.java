@@ -11,6 +11,7 @@ import com.detroitlabs.community.api.RestApi;
 import com.detroitlabs.community.api.RestCallback;
 import com.detroitlabs.community.model.Event;
 import com.detroitlabs.community.model.Problem;
+import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -38,7 +39,8 @@ public class ProblemFragment extends Fragment{
 
     @AfterViews
     public void onAfterViews(){
-        //Picasso.with(getActivity()).load(problem.getImageUrl()).into(problemPhoto);
+        //if (problem.getImageUrl() != null && problem.getImageUrl().length() > 0)
+        Picasso.with(getActivity()).load("http://media.mlive.com/newsnow_impact/photo/-9c8f42d0fb37339f.jpg").into(problemPhoto);
         description.setText(problem.getDescription());
         adapter = new EventAdapter(getActivity(), new ArrayList<Event>());
         eventsList.setAdapter(adapter);
