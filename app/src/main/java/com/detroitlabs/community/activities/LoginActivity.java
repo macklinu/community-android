@@ -1,22 +1,30 @@
 package com.detroitlabs.community.activities;
 
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
 
 import com.detroitlabs.community.R;
+import com.detroitlabs.community.prefs.AppPrefs;
 
+import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 
 @EActivity(R.layout.activity_login)
 public class LoginActivity extends Activity {
+
+    @Bean
+    AppPrefs appPrefs;
+
+    @AfterInject
+    void afterInject() {
+        if (appPrefs.isUserSignedIn()) {
+            NavigationActivity_.intent(this)
+                    .start();
+            finish();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
