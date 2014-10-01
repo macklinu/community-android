@@ -27,6 +27,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
+import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.UiThread;
 
 import java.util.List;
@@ -109,15 +110,6 @@ public class NavigationActivity extends BaseActivity implements
     }
 
     @Override
-    public void onLogOutClicked() {
-        appPrefs.clearUser();
-        RegistrationActivity_
-                .intent(this)
-                .start();
-        finish();
-    }
-
-    @Override
     public void onProblemSuccessfullyCreated() {
         changeFragment(mapFragment, false);
     }
@@ -146,11 +138,16 @@ public class NavigationActivity extends BaseActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    @OptionsItem(R.id.action_log_out)
+    void onLogOutClick() {
+        appPrefs.clearUser();
+        RegistrationActivity_
+                .intent(this)
+                .start();
+        finish();
     }
 
     @Override

@@ -261,13 +261,6 @@ public class NavigationDrawerFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    @OptionsItem(R.id.action_log_out)
-    void onLogOutClick() {
-        if (callbacks != null) {
-            callbacks.onLogOutClicked();
-        }
-    }
-
     private void closeDrawer() {
         if (drawerLayout != null) {
             drawerLayout.closeDrawer(fragmentContainerView);
@@ -298,6 +291,5 @@ public class NavigationDrawerFragment extends Fragment {
          */
         void onNavigationDrawerItemSelected(int position);
         void onReportProblemClicked();
-        void onLogOutClicked();
     }
 }
