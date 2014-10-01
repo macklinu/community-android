@@ -23,11 +23,17 @@ import android.widget.ListView;
 
 import com.detroitlabs.community.R;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
+@EFragment(R.layout.fragment_navigation_drawer)
 public class NavigationDrawerFragment extends Fragment {
 
     /**
@@ -51,8 +57,10 @@ public class NavigationDrawerFragment extends Fragment {
      */
     private ActionBarDrawerToggle drawerToggle;
 
+    @ViewById
+    ListView drawerListView;
+
     private DrawerLayout drawerLayout;
-    private ListView drawerListView;
     private View fragmentContainerView;
 
     private int currentSelectedPosition = 0;
@@ -75,9 +83,6 @@ public class NavigationDrawerFragment extends Fragment {
             currentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             fromSavedInstanceState = true;
         }
-
-        // Select either the default item (0) or the last selected item.
-        selectItem(currentSelectedPosition);
     }
 
     @Override
@@ -87,13 +92,8 @@ public class NavigationDrawerFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        final View view = inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);
-
-        drawerListView = (ListView) view.findViewById(R.id.drawerListView);
+    @AfterViews
+    void afterViews() {
         drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -109,8 +109,17 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section2),
                         getString(R.string.title_section3),
                 }));
-        drawerListView.setItemChecked(currentSelectedPosition, true);
-        return view;
+        // drawerListView.setItemChecked(currentSelectedPosition, true);
+        // Select either the default item (0) or the last selected item.
+        selectItem(currentSelectedPosition);
+    }
+
+    @Click
+    void report() {
+        if (callbacks != null) {
+            callbacks.onReportProblemClicked();
+        }
+        closeDrawer();
     }
 
     public boolean isDrawerOpen() {
@@ -139,7 +148,7 @@ public class NavigationDrawerFragment extends Fragment {
         // between the navigation drawer and the action bar app icon.
         drawerToggle = new ActionBarDrawerToggle(
                 getActivity(),                    /* host Activity */
-                NavigationDrawerFragment.this.drawerLayout,                    /* DrawerLayout object */
+                this.drawerLayout,                    /* DrawerLayout object */
                 R.drawable.ic_drawer,             /* nav drawer image to replace 'Up' caret */
                 R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
                 R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
@@ -196,9 +205,7 @@ public class NavigationDrawerFragment extends Fragment {
         if (drawerListView != null) {
             drawerListView.setItemChecked(position, true);
         }
-        if (drawerLayout != null) {
-            drawerLayout.closeDrawer(fragmentContainerView);
-        }
+        closeDrawer();
         if (callbacks != null) {
             callbacks.onNavigationDrawerItemSelected(position);
         }
@@ -257,6 +264,12 @@ public class NavigationDrawerFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    private void closeDrawer() {
+        if (drawerLayout != null) {
+            drawerLayout.closeDrawer(fragmentContainerView);
+        }
+    }
+
     /**
      * Per the navigation drawer design guidelines, updates the action bar to show the global app
      * 'context', rather than just what's in the current screen.
@@ -280,5 +293,6 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
+        void onReportProblemClicked();
     }
 }

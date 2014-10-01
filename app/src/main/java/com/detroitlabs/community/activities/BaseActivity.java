@@ -25,7 +25,7 @@ public abstract class BaseActivity extends Activity {
             fragmentTransaction.addToBackStack(fragment.getClass().getName());
         }
 
-        fragmentTransaction.replace(R.id.container, fragment);
+        fragmentTransaction.replace(R.id.fragmentContainer, fragment).commit();
         invalidateOptionsMenu();
     }
 
@@ -36,7 +36,7 @@ public abstract class BaseActivity extends Activity {
             fragmentTransaction.addToBackStack(fragment.getClass().getName());
         }
 
-        fragmentTransaction.add(R.id.container, fragment, fragment.getClass().getName());
+        fragmentTransaction.add(R.id.fragmentContainer, fragment, fragment.getClass().getName()).commit();
         invalidateOptionsMenu();
     }
 }

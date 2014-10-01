@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.detroitlabs.community.R;
+import com.detroitlabs.community.fragments.CreateProblemFragment_;
 import com.detroitlabs.community.fragments.NavigationDrawerFragment;
 import com.detroitlabs.community.managers.LocationManager;
 import com.detroitlabs.community.managers.LocationManager.OnLocationReceivedListener;
@@ -18,10 +19,14 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
+import org.androidannotations.annotations.UiThread;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 @EActivity(R.layout.activity_navigation)
 public class NavigationActivity extends BaseActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, OnLocationReceivedListener{
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, OnLocationReceivedListener {
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -31,9 +36,11 @@ public class NavigationActivity extends BaseActivity
     @FragmentById(R.id.navigation_drawer)
     NavigationDrawerFragment drawerFragment;
 
-    @FragmentById MapFragment mapFragment;
+    MapFragment mapFragment;
 
     @Bean LocationManager locationManager;
+
+    private Timer setMapOptionsTimer;
 
     @AfterViews
     void afterViews() {
@@ -44,20 +51,43 @@ public class NavigationActivity extends BaseActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        configureMap();
-
+        mapFragment = new MapFragment();
+        changeFragment(mapFragment, true);
+        setUpMap();
     }
 
-    private void configureMap(){
-        GoogleMap map = mapFragment.getMap();
-        map.setMyLocationEnabled(true);
-        locationManager.setOnLocationReceivedListener(this);
-        locationManager.onStart();
+    /**
+     * method pulled from previous app
+     */
+    @UiThread
+    void setUpMap() {
+        if (setMapOptionsTimer != null) {
+            setMapOptionsTimer.cancel();
+            setMapOptionsTimer.purge();
+            setMapOptionsTimer = null;
+        }
+
+        if (isMapReady()) {
+            configureMap();
+        } else {
+            setMapOptionsTimer = new Timer();
+            setMapOptionsTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    setUpMap();
+                }
+            }, 200);
+        }
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
+    }
+
+    @Override
+    public void onReportProblemClicked() {
+        changeFragment(new CreateProblemFragment_(), true);
     }
 
     public void restoreActionBar() {
@@ -95,5 +125,16 @@ public class NavigationActivity extends BaseActivity
     public void onLocationReceived(LatLng location){
         locationManager.setOnLocationReceivedListener(null);
         mapFragment.getMap().animateCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
+    }
+
+    private boolean isMapReady() {
+        return mapFragment.getMap() != null;
+    }
+
+    private void configureMap() {
+        GoogleMap map = mapFragment.getMap();
+        map.setMyLocationEnabled(true);
+        locationManager.setOnLocationReceivedListener(this);
+        locationManager.onStart();
     }
 }
