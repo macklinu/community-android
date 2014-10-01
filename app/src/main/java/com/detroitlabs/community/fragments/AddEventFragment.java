@@ -20,7 +20,6 @@ import org.springframework.web.client.RestClientException;
 public class AddEventFragment extends Fragment{
 
     @ViewById TimePicker timePicker;
-    @ViewById TimePicker timePicker2;
     @ViewById EditText   description;
     @ViewById Button     submit;
 
@@ -34,7 +33,9 @@ public class AddEventFragment extends Fragment{
 
     @Click
     public void submit(){
-        api.addEvent(new Event(problemId, System.currentTimeMillis(), System.currentTimeMillis()),new RestCallback<Event>(){
+        Event event = new Event(problemId, System.currentTimeMillis(), System.currentTimeMillis());
+        event.setDescription(description.getText().toString());
+        api.addEvent(event, new RestCallback<Event>(){
             @Override
             public void onSuccess(Event response){
                 getFragmentManager().popBackStack();
