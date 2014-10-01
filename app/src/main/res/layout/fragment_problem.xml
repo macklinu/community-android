@@ -15,14 +15,20 @@
               android:layout_margin="15dp"
               android:id="@+id/description"
               android:textColor="@android:color/white"
+              android:textSize="18sp"
               tools:text="SOME TEXT ABOUT THE PROBLEM"
-            />
+              android:layout_toLeftOf="@+id/addEvent"/>
     <ListView android:layout_width="match_parent" android:layout_height="match_parent"
               android:id="@+id/eventsList"
             android:layout_below="@+id/description"/>
-
-
-
+    <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:text="+"
+            android:id="@+id/addEvent" android:layout_below="@+id/problemPhoto" android:layout_alignParentRight="true"/>
 
 
 </RelativeLayout>
