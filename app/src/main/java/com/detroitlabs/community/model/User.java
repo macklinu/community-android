@@ -3,7 +3,7 @@ package com.detroitlabs.community.model;
 public class User{
 
     private int id;
-    private String email;
+    private String username;
     private String name;
     private String password;
 
@@ -11,8 +11,8 @@ public class User{
         return id;
     }
 
-    public String getEmail(){
-        return email;
+    public String getUsername(){
+        return username;
     }
 
     public String getName(){

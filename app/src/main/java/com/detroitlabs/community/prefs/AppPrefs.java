@@ -1,31 +1,40 @@
 package com.detroitlabs.community.prefs;
 
+import com.detroitlabs.community.model.User;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.sharedpreferences.Pref;
+
+import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 
 @EBean
 public class AppPrefs {
     @Pref
     Prefs_ prefs;
 
-    public String getUsername() {
-        return prefs.username().getOr(null);
+    private Gson gson;
+
+    @AfterInject
+    void afterInject() {
+        gson = new GsonBuilder()
+                .setFieldNamingPolicy(LOWER_CASE_WITH_UNDERSCORES)
+                .create();
     }
 
-    public String getPassword() {
-        return prefs.password().getOr(null);
+    public User getUser() {
+        final String userJsonString = prefs.user().getOr(null);
+        return gson.fromJson(userJsonString, User.class);
     }
 
-    public void setUsername(String username) {
-        prefs.username().put(username);
-    }
-
-    public void setPassword(String password) {
-        prefs.password().put(password);
+    public void setUser(User user) {
+        final String userJsonString = gson.toJson(user, User.class);
+        prefs.user().put(userJsonString);
     }
 
     public boolean isUserSignedIn() {
-        return getUsername() != null &&
-                getPassword() != null;
+        return getUser() != null;
     }
 }

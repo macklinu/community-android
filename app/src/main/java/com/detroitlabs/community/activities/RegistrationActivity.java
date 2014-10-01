@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.widget.EditText;
 
 import com.detroitlabs.community.R;
+import com.detroitlabs.community.api.RestApi;
 import com.detroitlabs.community.api.RestCallback;
 import com.detroitlabs.community.exceptions.RegistrationValidationException;
+import com.detroitlabs.community.model.User;
 import com.detroitlabs.community.prefs.AppPrefs;
 
 import org.androidannotations.annotations.AfterInject;
@@ -17,10 +19,13 @@ import org.androidannotations.annotations.ViewById;
 import static android.util.Patterns.EMAIL_ADDRESS;
 
 @EActivity(R.layout.activity_registration)
-public class RegistrationActivity extends Activity implements RestCallback<Object> {
+public class RegistrationActivity extends Activity implements RestCallback<User> {
 
     @Bean
     AppPrefs appPrefs;
+
+    @Bean
+    RestApi api;
 
     @ViewById
     EditText username;
@@ -57,9 +62,9 @@ public class RegistrationActivity extends Activity implements RestCallback<Objec
     }
 
     @Override
-    public void onSuccess(Object response) {
-        appPrefs.setUsername("" /* TODO set username from response? */);
-        appPrefs.setPassword("" /* TODO set password from response? */);
+    public void onSuccess(User response) {
+        /* TODO set password from response? */
+        /* TODO set username from response? */
 
         goToNavigationActivity();
     }
