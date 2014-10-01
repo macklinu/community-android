@@ -41,7 +41,7 @@ public class MarkerMaker{
             @Override
             public void onInfoWindowClick(Marker marker){
                 Problem clicked = markerProblems.get(marker);
-
+                onProblemClickedListener.onProblemClicked(clicked);
             }
         });
     }
