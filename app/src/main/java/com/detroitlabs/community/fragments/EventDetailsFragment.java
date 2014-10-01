@@ -113,7 +113,7 @@ public class EventDetailsFragment extends Fragment implements OnMapReadyListener
             inputMethodManager.hideSoftInputFromWindow(description.getWindowToken(), 0);
             final Comment comment = new Comment.Builder()
                     .message(commentEntry.getText().toString())
-                    .id(appPrefs.getUser().getId())
+                    .userId(appPrefs.getUser().getId())
                     .eventId(event.getId())
                     .time(System.currentTimeMillis())
                     .build();
