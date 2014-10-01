@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.location.Location;
 import android.net.Uri;
+import android.text.Editable;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import com.detroitlabs.community.prefs.AppPrefs;
 import com.detroitlabs.community.utils.CaptureRequest;
 import com.detroitlabs.community.utils.SnoopLogg;
 
+import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
@@ -123,6 +125,11 @@ public class CreateProblemFragment extends Fragment implements RestCallback<Prob
                 image.setBackground(null);
             }
         }
+    }
+
+    @AfterTextChange(R.id.description)
+    void onDescriptionTextChanged(Editable text) {
+        submit.setEnabled(text.length() > 0);
     }
 
     @EditorAction(R.id.description)

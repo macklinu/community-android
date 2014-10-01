@@ -13,21 +13,35 @@
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18dp"/>
+        android:textSize="18dp"
+        android:layout_below="@+id/map"/>
 
     <TextView
         android:id="@+id/startTime"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/description"
+        android:layout_alignParentLeft="true"/>
 
     <TextView
         android:id="@+id/endTime"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/description"
+        android:layout_alignParentRight="true"/>
 
     <ListView
         android:id="@+id/comments"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/startTime"/>
+
+    <EditText
+        android:id="@+id/commentEntry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:hint="Add a comment"
+        android:imeOptions="actionSend"/>
 
 </RelativeLayout>
