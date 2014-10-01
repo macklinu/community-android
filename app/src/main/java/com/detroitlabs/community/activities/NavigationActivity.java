@@ -2,14 +2,19 @@ package com.detroitlabs.community.activities;
 
 import android.app.ActionBar;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.detroitlabs.community.R;
+import com.detroitlabs.community.api.RestApi;
+import com.detroitlabs.community.api.RestCallback;
 import com.detroitlabs.community.fragments.CreateProblemFragment_;
 import com.detroitlabs.community.fragments.NavigationDrawerFragment;
 import com.detroitlabs.community.managers.LocationManager;
 import com.detroitlabs.community.managers.LocationManager.OnLocationReceivedListener;
+import com.detroitlabs.community.managers.MarkerMaker;
+import com.detroitlabs.community.model.Problem;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -21,6 +26,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.UiThread;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -41,6 +47,7 @@ public class NavigationActivity extends BaseActivity
     @Bean LocationManager locationManager;
 
     private Timer setMapOptionsTimer;
+    @Bean RestApi api;
 
     @AfterViews
     void afterViews() {
@@ -124,7 +131,8 @@ public class NavigationActivity extends BaseActivity
     @Override
     public void onLocationReceived(LatLng location){
         locationManager.setOnLocationReceivedListener(null);
-        mapFragment.getMap().animateCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
+        mapFragment.getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
+        api.getProblemsByLocation(location.latitude, location.longitude, problemsCallback);
     }
 
     private boolean isMapReady() {
@@ -137,4 +145,16 @@ public class NavigationActivity extends BaseActivity
         locationManager.setOnLocationReceivedListener(this);
         locationManager.onStart();
     }
+
+    RestCallback<List<Problem>> problemsCallback = new RestCallback<List<Problem>>(){
+        @Override
+        public void onSuccess(List<Problem> response){
+            MarkerMaker markerMaker = new MarkerMaker(mapFragment.getMap(), response);
+            markerMaker.populate();
+        }
+
+        @Override
+        public void onFailure(Exception e){
+        }
+    };
 }
