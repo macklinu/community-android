@@ -11,22 +11,21 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.detroitlabs.community.R;
+import com.detroitlabs.community.adapters.FragmentClassEntry;
+import com.detroitlabs.community.adapters.NavigationFragmentAdapter;
+import com.google.android.gms.maps.MapFragment;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -95,24 +94,24 @@ public class NavigationDrawerFragment extends Fragment {
 
     @AfterViews
     void afterViews() {
+
+        final FragmentClassEntry[] fragmentClassEntries = new FragmentClassEntry[] {
+                new FragmentClassEntry("Problem Map View", MapFragment.class),
+                new FragmentClassEntry("Problem List View", ProblemListFragment.class)
+        };
+
         drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
+                clickedItem(position, fragmentClassEntries[position]);
             }
         });
-        drawerListView.setAdapter(new ArrayAdapter<String>(
+
+        drawerListView.setAdapter(new NavigationFragmentAdapter(
                 getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));
-        // drawerListView.setItemChecked(currentSelectedPosition, true);
-        // Select either the default item (0) or the last selected item.
-        selectItem(currentSelectedPosition);
+                fragmentClassEntries
+                ));
+        clickedItem(0, fragmentClassEntries[0]);
     }
 
     @Click
@@ -201,14 +200,14 @@ public class NavigationDrawerFragment extends Fragment {
         this.drawerLayout.setDrawerListener(drawerToggle);
     }
 
-    private void selectItem(int position) {
+    private void clickedItem(int position, FragmentClassEntry fragmentClassEntry) {
         currentSelectedPosition = position;
         if (drawerListView != null) {
             drawerListView.setItemChecked(position, true);
         }
         closeDrawer();
         if (callbacks != null) {
-            callbacks.onNavigationDrawerItemSelected(position);
+            callbacks.onNavigationDrawerItemSelected(fragmentClassEntry);
         }
     }
 
@@ -289,7 +288,7 @@ public class NavigationDrawerFragment extends Fragment {
         /**
          * Called when an item in the navigation drawer is selected.
          */
-        void onNavigationDrawerItemSelected(int position);
+        void onNavigationDrawerItemSelected(FragmentClassEntry fragmentClassEntry);
         void onReportProblemClicked();
     }
 }
