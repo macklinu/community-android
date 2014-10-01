@@ -30,10 +30,16 @@ public class RegistrationActivity extends Activity implements RestCallback<Objec
 
     @AfterInject
     void afterInject() {
-        if (appPrefs.isUserSignedIn()) {
+        if (isSignedIn()) {
             goToNavigationActivity();
             finish();
         }
+    }
+
+    private boolean isSignedIn() {
+        return true;
+        // TODO replace this method with the following code
+        // appPrefs.isUserSignedIn()
     }
 
     @Click
