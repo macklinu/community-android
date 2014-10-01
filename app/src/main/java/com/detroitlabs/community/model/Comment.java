@@ -10,6 +10,14 @@ public class Comment implements Parcelable {
     private long time;
     private int eventId;
 
+    private Comment(Builder builder) {
+        id = builder.id;
+        userId = builder.userId;
+        message = builder.message;
+        time = builder.time;
+        eventId = builder.eventId;
+    }
+
     public int getId() {
         return id;
     }
@@ -50,9 +58,6 @@ public class Comment implements Parcelable {
         dest.writeInt(this.eventId);
     }
 
-    public Comment() {
-    }
-
     private Comment(Parcel in) {
         this.id = in.readInt();
         this.userId = in.readInt();
@@ -70,4 +75,44 @@ public class Comment implements Parcelable {
             return new Comment[size];
         }
     };
+
+    public static final class Builder {
+        private int id;
+        private int userId;
+        private String message;
+        private long time;
+        private int eventId;
+
+        public Builder() {
+        }
+
+        public Builder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder userId(int userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder message(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public Builder time(long time) {
+            this.time = time;
+            return this;
+        }
+
+        public Builder eventId(int eventId) {
+            this.eventId = eventId;
+            return this;
+        }
+
+        public Comment build() {
+            return new Comment(this);
+        }
+    }
 }
