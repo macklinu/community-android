@@ -25,7 +25,7 @@ public abstract class BaseActivity extends Activity {
             fragmentTransaction.addToBackStack(fragment.getClass().getName());
         }
 
-        fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+        fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
         fragmentTransaction.replace(R.id.fragmentContainer, fragment).commit();
         invalidateOptionsMenu();
     }
@@ -36,7 +36,7 @@ public abstract class BaseActivity extends Activity {
         if (addToBackStack) {
             fragmentTransaction.addToBackStack(fragment.getClass().getName());
         }
-        fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+        fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
         fragmentTransaction.add(R.id.fragmentContainer, fragment, fragment.getClass().getName()).commit();
         invalidateOptionsMenu();
     }
