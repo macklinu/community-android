@@ -34,6 +34,8 @@ import org.joda.time.DateTime;
 import org.springframework.web.client.RestClientException;
 
 import static android.view.View.GONE;
+import static android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
+import static android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_SEND;
 import static com.detroitlabs.community.utils.MapTimer.OnMapReadyListener;
 
@@ -89,6 +91,7 @@ public class EventDetailsFragment extends Fragment implements OnMapReadyListener
                 event.getComments()
         );
         comments.setAdapter(adapter);
+        getActivity().getWindow().setSoftInputMode(SOFT_INPUT_ADJUST_PAN);
     }
 
     @EditorAction(R.id.commentEntry)
