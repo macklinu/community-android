@@ -7,7 +7,7 @@ import android.app.FragmentTransaction;
 import com.detroitlabs.community.R;
 
 public abstract class BaseActivity extends Activity {
-    
+
     @Override
     public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() != 0) {
