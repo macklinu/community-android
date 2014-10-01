@@ -2,14 +2,12 @@ package com.detroitlabs.community.activities;
 
 import android.app.ActionBar;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.detroitlabs.community.R;
 import com.detroitlabs.community.api.RestApi;
 import com.detroitlabs.community.api.RestCallback;
-import com.detroitlabs.community.fragments.CreateProblemFragment;
 import com.detroitlabs.community.fragments.CreateProblemFragment_;
 import com.detroitlabs.community.fragments.NavigationDrawerFragment;
 import com.detroitlabs.community.managers.LocationManager;

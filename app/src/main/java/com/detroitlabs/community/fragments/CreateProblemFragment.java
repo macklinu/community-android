@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.location.Location;
 import android.net.Uri;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -20,7 +22,9 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.EditorAction;
 import org.androidannotations.annotations.OnActivityResult;
+import org.androidannotations.annotations.SystemService;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
@@ -30,6 +34,7 @@ import static android.content.pm.PackageManager.FEATURE_CAMERA;
 import static android.os.Environment.DIRECTORY_DCIM;
 import static android.os.Environment.getExternalStoragePublicDirectory;
 import static android.view.View.GONE;
+import static android.view.inputmethod.EditorInfo.IME_ACTION_SEND;
 import static com.detroitlabs.community.utils.Dialogger.showWebRequestErrorDialog;
 
 @EFragment(R.layout.fragment_create_problem)
@@ -39,6 +44,9 @@ public class CreateProblemFragment extends Fragment implements RestCallback<Prob
     }
 
     private static final int RESULT_CODE_CAPTURE = 0x01;
+
+    @SystemService
+    InputMethodManager inputMethodManager;
 
     @Bean
     RestApi api;
@@ -54,6 +62,9 @@ public class CreateProblemFragment extends Fragment implements RestCallback<Prob
 
     @ViewById
     EditText description;
+
+    @ViewById
+    Button submit;
 
     private CaptureRequest captureRequest;
     private CreateProblemFragmentCallbacks callbacks;
@@ -111,6 +122,16 @@ public class CreateProblemFragment extends Fragment implements RestCallback<Prob
                 image.setBackground(null);
             }
         }
+    }
+
+    @EditorAction(R.id.description)
+    boolean descriptionEditorAction(int actionId) {
+        if (actionId == IME_ACTION_SEND) {
+            inputMethodManager.hideSoftInputFromWindow(description.getWindowToken(), 0);
+            submit.performClick();
+            return true;
+        }
+        return false;
     }
 
     @Override
