@@ -14,6 +14,7 @@ import com.detroitlabs.community.fragments.NavigationDrawerFragment;
 import com.detroitlabs.community.fragments.ProblemFragment;
 import com.detroitlabs.community.fragments.ProblemFragment_;
 import com.detroitlabs.community.fragments.ProblemListFragment;
+import com.detroitlabs.community.fragments.ProblemListFragment_;
 import com.detroitlabs.community.managers.LocationManager;
 import com.detroitlabs.community.managers.LocationManager.OnLocationReceivedListener;
 import com.detroitlabs.community.managers.MarkerMaker;
@@ -66,7 +67,7 @@ public class NavigationActivity extends BaseActivity implements
     private Timer setMapOptionsTimer;
     @Bean RestApi api;
 
-    private List<Problem> problems = new ArrayList<Problem>();
+    private ArrayList<Problem> problems = new ArrayList<Problem>();
     private LatLng location = new LatLng(0, 0);
 
     @AfterViews
@@ -112,7 +113,7 @@ public class NavigationActivity extends BaseActivity implements
             changeFragment(mapFragment, false);
             setUpMap();
         } else if (fragmentClassEntry.getFragment().getName().equals(ProblemListFragment.class.getName())) {
-            problemListFragment = new ProblemListFragment();
+            problemListFragment = ProblemListFragment_.builder().problems(problems).build();
             changeFragment(problemListFragment, false);
             mapFragment = null;
         }
@@ -212,7 +213,7 @@ public class NavigationActivity extends BaseActivity implements
     RestCallback<List<Problem>> problemsCallback = new RestCallback<List<Problem>>(){
         @Override
         public void onSuccess(List<Problem> response){
-            problems = response;
+            problems = new ArrayList<Problem>(response);
             if (hasMap()) {
                 populateMap();
             } else {

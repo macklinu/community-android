@@ -12,6 +12,7 @@ public class Problem implements Parcelable {
     private String description;
     private String imageUrl;
     private String userId;
+    private double distance;
 
     private Problem(Builder builder) {
         id = builder.id;
@@ -48,6 +49,10 @@ public class Problem implements Parcelable {
 
     public String getUserId() {
         return userId;
+    }
+
+    public double getDistance() {
+        return distance;
     }
 
     public static final class Builder {
@@ -106,6 +111,7 @@ public class Problem implements Parcelable {
         dest.writeString(this.description);
         dest.writeString(this.imageUrl);
         dest.writeString(this.userId);
+        dest.writeDouble(this.distance);
     }
 
     private Problem(Parcel in) {
@@ -115,6 +121,7 @@ public class Problem implements Parcelable {
         this.description = in.readString();
         this.imageUrl = in.readString();
         this.userId = in.readString();
+        this.distance = in.readDouble();
     }
 
     public static final Parcelable.Creator<Problem> CREATOR = new Parcelable.Creator<Problem>() {
