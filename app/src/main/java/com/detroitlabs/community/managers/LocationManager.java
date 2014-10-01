@@ -47,7 +47,9 @@ public class LocationManager implements ConnectionCallbacks, OnConnectionFailedL
     }
 
     public void onStart() {
-        locationClient.connect();
+        if (!locationClient.isConnecting() && !locationClient.isConnected()) {
+            locationClient.connect();
+        }
     }
 
     public void onStop() {

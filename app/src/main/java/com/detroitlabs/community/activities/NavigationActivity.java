@@ -56,16 +56,16 @@ public class NavigationActivity extends BaseActivity implements
     @Bean
     AppPrefs appPrefs;
 
-    @FragmentById(R.id.navigation_drawer)
-    NavigationDrawerFragment drawerFragment;
-
-    MapFragment mapFragment;
-    ProblemListFragment problemListFragment;
+    @Bean RestApi api;
 
     @Bean LocationManager locationManager;
 
+    @FragmentById(R.id.navigation_drawer)
+    NavigationDrawerFragment drawerFragment;
+
+    private MapFragment mapFragment;
+    private ProblemListFragment problemListFragment;
     private Timer setMapOptionsTimer;
-    @Bean RestApi api;
 
     private ArrayList<Problem> problems = new ArrayList<Problem>();
     private LatLng location = new LatLng(0, 0);
@@ -77,7 +77,6 @@ public class NavigationActivity extends BaseActivity implements
         drawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
         locationManager.setOnLocationReceivedListener(this);
-        locationManager.onStart();
     }
 
     /**
@@ -163,6 +162,18 @@ public class NavigationActivity extends BaseActivity implements
                 .intent(this)
                 .start();
         finish();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        locationManager.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        locationManager.onStop();
+        super.onStop();
     }
 
     @Override
