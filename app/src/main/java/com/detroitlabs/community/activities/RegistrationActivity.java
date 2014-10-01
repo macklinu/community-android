@@ -55,14 +55,10 @@ public class RegistrationActivity extends Activity implements RestCallback<User>
     @Click
     void register() {
         try {
-            final String nameString = validateName();
-            final String usernameString = validateUsername();
-            final String passwordString = validatePassword();
-
             final User user = new User.Builder()
-                    .name(nameString)
-                    .username(usernameString)
-                    .password(passwordString)
+                    .name(validateName())
+                    .username(validateUsername())
+                    .password(validatePassword())
                     .build();
 
             api.register(user, this);
