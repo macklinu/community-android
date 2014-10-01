@@ -15,6 +15,12 @@ public class Event implements Parcelable {
     private String description;
     private List<Comment> comments;
 
+    public Event(int problemId, long startTime, long endTime){
+        this.problemId = problemId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
     public int getId() {
         return id;
     }
