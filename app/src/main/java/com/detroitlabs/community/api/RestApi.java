@@ -39,8 +39,8 @@ public class RestApi {
     @Background
     public void addComment(Comment comment, RestCallback<Comment> callback) {
         try {
-            final ResponseObject<Comment> response = restClient.addComment(comment);
-            callback.onSuccess(response.getResponse());
+            final Comment response = restClient.addComment(comment);
+            callback.onSuccess(response);
         } catch (Exception e) {
             callback.onFailure(e);
         }
@@ -49,8 +49,8 @@ public class RestApi {
     @Background
     public void addEvent(Event event, RestCallback<Event> callback) {
         try {
-            final ResponseObject<Event> response = restClient.addEvent(event);
-            callback.onSuccess(response.getResponse());
+            final Event response = restClient.addEvent(event);
+            callback.onSuccess(response);
         } catch (Exception e) {
             callback.onFailure(e);
         }
@@ -59,8 +59,8 @@ public class RestApi {
     @Background
     public void addProblem(Problem problem, RestCallback<Problem> callback) {
         try {
-            final ResponseObject<Problem> response = restClient.addProblem(problem);
-            callback.onSuccess(response.getResponse());
+            final Problem response = restClient.addProblem(problem);
+            callback.onSuccess(response);
         } catch (Exception e) {
             callback.onFailure(e);
         }
@@ -69,8 +69,8 @@ public class RestApi {
     @Background
     public void getEventByProblemId(int id, RestCallback<Event> callback) {
         try {
-            final ResponseObject<Event> response = restClient.getEventByProblemId(id);
-            callback.onSuccess(response.getResponse());
+            final Event response = restClient.getEventByProblemId(id);
+            callback.onSuccess(response);
         } catch (Exception e) {
             callback.onFailure(e);
         }
@@ -79,8 +79,8 @@ public class RestApi {
     @Background
     public void getProblemsByLocation(double lat, double lng, RestCallback<List<Problem>> callback) {
         try {
-            final ResponseObject<List<Problem>> response = restClient.getProblemsByLocation(lat, lng);
-            callback.onSuccess(response.getResponse());
+            final List<Problem> response = restClient.getProblemsByLocation(lat, lng);
+            callback.onSuccess(response);
         } catch (Exception e) {
             callback.onFailure(e);
         }
@@ -99,7 +99,7 @@ public class RestApi {
     @Background
     public void login(User user, RestCallback<User> callback) {
         try {
-            final User response = restClient.login(user).getResponse();
+            final User response = restClient.login(user);
             appPrefs.setUser(response);
             setBasicAuth();
             callback.onSuccess(response);
@@ -111,7 +111,7 @@ public class RestApi {
     @Background
     public void register(User user, RestCallback<User> callback) {
         try {
-            final User response = restClient.register(user).getResponse();
+            final User response = restClient.register(user);
             appPrefs.setUser(response);
             setBasicAuth();
             callback.onSuccess(response);

@@ -24,26 +24,26 @@ import static org.androidannotations.api.rest.MediaType.APPLICATION_JSON;
 public interface RestClient extends RestClientHeaders, RestClientSupport, RestClientRootUrl {
 
     @Post("/comments")
-    ResponseObject<Comment> addComment(Comment comment);
+    Comment addComment(Comment comment);
 
     @Post("/events")
-    ResponseObject<Event> addEvent(Event event);
+    Event addEvent(Event event);
 
     @Post("/problems")
-    ResponseObject<Problem> addProblem(Problem problem);
+    Problem addProblem(Problem problem);
 
     @Get("/problems?lat={lat}&lng={lng}")
-    ResponseObject<List<Problem>> getProblemsByLocation(double lat, double lng);
+    List<Problem> getProblemsByLocation(double lat, double lng);
 
     @Get("/events/{id}")
-    ResponseObject<Event> getEventByProblemId(int id);
+    Event getEventByProblemId(int id);
 
     @Delete("/problems/{id}")
     void deleteProblem(int id);
 
     @Post("/login")
-    ResponseObject<User> login(User user);
+    User login(User user);
 
     @Post("/register")
-    ResponseObject<User> register(User user);
+    User register(User user);
 }
