@@ -16,6 +16,7 @@ import com.detroitlabs.community.managers.LocationManager;
 import com.detroitlabs.community.managers.LocationManager.OnLocationReceivedListener;
 import com.detroitlabs.community.managers.MarkerMaker;
 import com.detroitlabs.community.model.Problem;
+import com.detroitlabs.community.prefs.AppPrefs;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -44,6 +45,9 @@ public class NavigationActivity extends BaseActivity implements
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence title;
+
+    @Bean
+    AppPrefs appPrefs;
 
     @FragmentById(R.id.navigation_drawer)
     NavigationDrawerFragment drawerFragment;
@@ -101,6 +105,15 @@ public class NavigationActivity extends BaseActivity implements
     @Override
     public void onReportProblemClicked() {
         changeFragment(new CreateProblemFragment_(), true);
+    }
+
+    @Override
+    public void onLogOutClicked() {
+        appPrefs.clearUser();
+        RegistrationActivity_
+                .intent(this)
+                .start();
+        finish();
     }
 
     @Override
