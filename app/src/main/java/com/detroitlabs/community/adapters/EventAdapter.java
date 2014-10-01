@@ -30,7 +30,7 @@ public class EventAdapter extends ArrayAdapter<Event>{
 
         TextView tv = (TextView)view.findViewById(R.id.eventText);
 
-        tv.setText(new DateTime(getItem(position).getStartTime()).toString("MM d h:mm"));
+        tv.setText(getItem(position).getDescription() + " - " + new DateTime(getItem(position).getStartTime()).toString("MMMM d h:mm"));
 
         return view;
     }

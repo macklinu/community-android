@@ -13,14 +13,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/timePicker"/>
-    <TimePicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/timePicker2"/>
 
     <Button android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="SUBMIT EVENT"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
             android:id="@+id/submit"
             />
 </LinearLayout>

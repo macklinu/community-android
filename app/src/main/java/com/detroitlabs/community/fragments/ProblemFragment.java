@@ -69,7 +69,9 @@ public class ProblemFragment extends Fragment{
 
     @Click
     public void addEvent(){
-        ((BaseActivity)getActivity()).changeFragment(new AddEventFragment_(), true);
+        AddEventFragment f = new AddEventFragment_();
+        f.setProblemId(problem.getId());
+        ((BaseActivity)getActivity()).changeFragment(f, true);
     }
 
     RestCallback<List<Event>> eventsCallback = new RestCallback<List<Event>>(){
