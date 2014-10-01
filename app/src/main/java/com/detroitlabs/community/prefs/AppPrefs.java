@@ -9,11 +9,11 @@ public class AppPrefs {
     Prefs_ prefs;
 
     public String getUsername() {
-        return prefs.username().get();
+        return prefs.username().getOr(null);
     }
 
     public String getPassword() {
-        return prefs.password().get();
+        return prefs.password().getOr(null);
     }
 
     public void setUsername(String username) {
