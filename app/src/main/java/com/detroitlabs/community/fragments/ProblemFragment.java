@@ -17,6 +17,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.springframework.web.client.RestClientException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class ProblemFragment extends Fragment{
         }
 
         @Override
-        public void onFailure(Exception e){
+        public void onFailure(RestClientException e){
 
         }
     };

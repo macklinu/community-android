@@ -26,6 +26,7 @@ import org.androidannotations.annotations.EditorAction;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.SystemService;
 import org.androidannotations.annotations.ViewById;
+import org.springframework.web.client.RestClientException;
 
 import java.io.File;
 
@@ -144,7 +145,7 @@ public class CreateProblemFragment extends Fragment implements RestCallback<Prob
     }
 
     @Override
-    public void onFailure(Exception e) {
+    public void onFailure(RestClientException e) {
         SnoopLogg.e(e);
         showWebRequestErrorDialog(getActivity());
     }

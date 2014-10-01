@@ -14,6 +14,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.rest.RestService;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class RestApi {
         try {
             final Comment response = restClient.addComment(comment);
             callback.onSuccess(response);
-        } catch (Exception e) {
+        } catch (RestClientException e) {
             callback.onFailure(e);
         }
     }
@@ -51,7 +52,7 @@ public class RestApi {
         try {
             final Event response = restClient.addEvent(event);
             callback.onSuccess(response);
-        } catch (Exception e) {
+        } catch (RestClientException e) {
             callback.onFailure(e);
         }
     }
@@ -61,7 +62,7 @@ public class RestApi {
         try {
             final Problem response = restClient.addProblem(problem);
             callback.onSuccess(response);
-        } catch (Exception e) {
+        } catch (RestClientException e) {
             callback.onFailure(e);
         }
     }
@@ -71,7 +72,7 @@ public class RestApi {
         try {
             final List<Event> response = restClient.getEventsByProblemId(id);
             callback.onSuccess(response);
-        } catch (Exception e) {
+        } catch (RestClientException e) {
             callback.onFailure(e);
         }
     }
@@ -81,7 +82,7 @@ public class RestApi {
         try {
             final List<Problem> response = restClient.getProblemsByLocation(lat, lng);
             callback.onSuccess(response);
-        } catch (Exception e) {
+        } catch (RestClientException e) {
             callback.onFailure(e);
         }
     }
@@ -91,7 +92,7 @@ public class RestApi {
         try {
             restClient.deleteProblem(id);
             callback.onSuccess(null);
-        } catch (Exception e) {
+        } catch (RestClientException e) {
             callback.onFailure(e);
         }
     }
@@ -103,7 +104,7 @@ public class RestApi {
             appPrefs.setUser(response);
             setBasicAuth();
             callback.onSuccess(response);
-        } catch (Exception e) {
+        } catch (RestClientException e) {
             callback.onFailure(e);
         }
     }
@@ -115,7 +116,7 @@ public class RestApi {
             appPrefs.setUser(response);
             setBasicAuth();
             callback.onSuccess(response);
-        } catch (Exception e) {
+        } catch (RestClientException e) {
             callback.onFailure(e);
         }
     }

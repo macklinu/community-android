@@ -41,9 +41,9 @@ public interface RestClient extends RestClientHeaders, RestClientSupport, RestCl
     @Delete("/problems/{id}")
     void deleteProblem(int id);
 
-    @Post("/login")
+    @Post("/users/login")
     User login(User user);
 
-    @Post("/register")
+    @Post("/users/register")
     User register(User user);
 }

@@ -9,20 +9,11 @@
     tools:context="com.detroitlabs.community.activities.LoginActivity$PlaceholderFragment">
 
     <EditText
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="First and last name"
-        android:inputType="text"/>
-
-
-    <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email address"
-        android:inputType="textEmailAddress"
-        android:layout_below="@+id/name"/>
+        android:inputType="textEmailAddress"/>
 
     <EditText
         android:id="@+id/password"
@@ -33,10 +24,26 @@
         android:layout_below="@+id/username"/>
 
     <Button
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:layout_below="@+id/password"/>
+
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="First and last name"
+        android:inputType="text"
+        android:layout_below="@id/login"/>
+
+    <Button
         android:id="@+id/register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Register"
-        android:layout_below="@+id/password"/>
+        android:layout_below="@+id/name"/>
 
 </RelativeLayout>

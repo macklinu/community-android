@@ -29,6 +29,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.UiThread;
+import org.springframework.web.client.RestClientException;
 
 import java.util.List;
 import java.util.Timer;
@@ -188,7 +189,7 @@ public class NavigationActivity extends BaseActivity implements
         }
 
         @Override
-        public void onFailure(Exception e){
+        public void onFailure(RestClientException e){
         }
     };
 }
