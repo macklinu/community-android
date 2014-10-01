@@ -111,7 +111,7 @@ public class CreateProblemFragment extends Fragment implements RestCallback<Prob
     @Click
     void submit() {
         final Location location = locationManager.getLocation();
-        final Problem.Builder builder = new Problem.Builder(1);
+        final Problem.Builder builder = new Problem.Builder();
         if (location != null) {
             builder.lat(location.getLatitude())
                     .lng(location.getLongitude());

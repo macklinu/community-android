@@ -63,8 +63,7 @@ public class Problem implements Parcelable {
         private String imageUrl;
         private String userId;
 
-        public Builder(int id) {
-            this.id = id;
+        public Builder() {
         }
 
         public Builder lat(double lat) {
