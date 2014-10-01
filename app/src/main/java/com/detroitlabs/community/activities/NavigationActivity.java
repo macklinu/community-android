@@ -1,24 +1,27 @@
 package com.detroitlabs.community.activities;
 
 import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.detroitlabs.community.adapters.FragmentClassEntry;
-import com.detroitlabs.community.fragments.NavigationDrawerFragment;
 import com.detroitlabs.community.R;
+import com.detroitlabs.community.fragments.NavigationDrawerFragment;
+import com.detroitlabs.community.managers.LocationManager;
+import com.detroitlabs.community.managers.LocationManager.OnLocationReceivedListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
 
 @EActivity(R.layout.activity_navigation)
 public class NavigationActivity extends BaseActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, OnLocationReceivedListener{
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -30,6 +33,8 @@ public class NavigationActivity extends BaseActivity
 
     @FragmentById MapFragment mapFragment;
 
+    @Bean LocationManager locationManager;
+
     @AfterViews
     void afterViews() {
         title = getTitle();
@@ -39,6 +44,15 @@ public class NavigationActivity extends BaseActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        configureMap();
+
+    }
+
+    private void configureMap(){
+        GoogleMap map = mapFragment.getMap();
+        map.setMyLocationEnabled(true);
+        locationManager.setOnLocationReceivedListener(this);
+        locationManager.onStart();
     }
 
     @Override
@@ -77,4 +91,9 @@ public class NavigationActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onLocationReceived(LatLng location){
+        locationManager.setOnLocationReceivedListener(null);
+        mapFragment.getMap().animateCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
+    }
 }

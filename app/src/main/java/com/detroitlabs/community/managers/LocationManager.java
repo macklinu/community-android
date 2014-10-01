@@ -8,6 +8,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
@@ -21,6 +22,10 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 @EBean(scope = Singleton)
 public class LocationManager implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
 
+    public interface OnLocationReceivedListener{
+        public void onLocationReceived(LatLng location);
+    }
+
     public static final long REQUEST_INTERVAL = 5000L;
     public static final long REQUEST_FASTEST_INTERVAL = 1000L;
     @RootContext
@@ -28,12 +33,17 @@ public class LocationManager implements ConnectionCallbacks, OnConnectionFailedL
 
     private LocationClient locationClient;
     private LocationRequest locationRequest;
+    private OnLocationReceivedListener onLocationReceivedListener;
     private Location location;
 
     @AfterInject
     void afterInject() {
         locationClient = new LocationClient(context, this, this);
         setUpLocationRequest();
+    }
+
+    public void setOnLocationReceivedListener(OnLocationReceivedListener onLocationReceivedListener){
+        this.onLocationReceivedListener = onLocationReceivedListener;
     }
 
     public void onStart() {
@@ -72,6 +82,10 @@ public class LocationManager implements ConnectionCallbacks, OnConnectionFailedL
     @Override
     public void onLocationChanged(Location location) {
         this.location = location;
+
+        if (onLocationReceivedListener != null){
+            onLocationReceivedListener.onLocationReceived(new LatLng(location.getLatitude(), location.getLongitude()));
+        }
     }
 
     private void setUpLocationRequest() {
