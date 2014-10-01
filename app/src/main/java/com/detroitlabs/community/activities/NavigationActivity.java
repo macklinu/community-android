@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import com.detroitlabs.community.R;
 import com.detroitlabs.community.api.RestApi;
 import com.detroitlabs.community.api.RestCallback;
+import com.detroitlabs.community.fragments.CreateProblemFragment;
 import com.detroitlabs.community.fragments.CreateProblemFragment_;
 import com.detroitlabs.community.fragments.NavigationDrawerFragment;
 import com.detroitlabs.community.managers.LocationManager;
@@ -30,9 +31,14 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.detroitlabs.community.fragments.CreateProblemFragment.CreateProblemFragmentCallbacks;
+import static com.detroitlabs.community.fragments.NavigationDrawerFragment.NavigationDrawerCallbacks;
+
 @EActivity(R.layout.activity_navigation)
-public class NavigationActivity extends BaseActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, OnLocationReceivedListener {
+public class NavigationActivity extends BaseActivity implements
+        NavigationDrawerCallbacks,
+        OnLocationReceivedListener,
+        CreateProblemFragmentCallbacks{
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -95,6 +101,11 @@ public class NavigationActivity extends BaseActivity
     @Override
     public void onReportProblemClicked() {
         changeFragment(new CreateProblemFragment_(), true);
+    }
+
+    @Override
+    public void onProblemSuccessfullyCreated() {
+        changeFragment(mapFragment, false);
     }
 
     public void restoreActionBar() {

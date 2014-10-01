@@ -17,7 +17,6 @@ import com.detroitlabs.community.utils.SnoopLogg;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.model.LatLng;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -27,10 +26,12 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.joda.time.DateTime;
 
+import java.util.List;
+
 import static com.detroitlabs.community.utils.Dialogger.showWebRequestErrorDialog;
 
 @EFragment(R.layout.fragment_event_details)
-public class EventDetailsFragment extends Fragment implements RestCallback<Event>, MapTimer.OnMapReadyListener {
+public class EventDetailsFragment extends Fragment implements RestCallback<List<Event>>, MapTimer.OnMapReadyListener {
 
     @Bean
     RestApi api;
@@ -55,12 +56,13 @@ public class EventDetailsFragment extends Fragment implements RestCallback<Event
 
     @AfterViews
     void afterViews() {
-        api.getEventByProblemId(problem.getId(), this);
+        api.getEventsByProblemId(problem.getId(), this);
     }
 
     @Override
     @UiThread
-    public void onSuccess(Event event) {
+    public void onSuccess(List<Event> response) {
+        final Event event = response.get(0);
         new MapTimer(map, this);
         description.setText(event.getDescription());
         startTime.setText(new DateTime(event.getStartTime()).toString("mm/dd/yyyy"));

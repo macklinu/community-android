@@ -1,5 +1,6 @@
 package com.detroitlabs.community.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.location.Location;
 import android.net.Uri;
@@ -33,6 +34,9 @@ import static com.detroitlabs.community.utils.Dialogger.showWebRequestErrorDialo
 
 @EFragment(R.layout.fragment_create_problem)
 public class CreateProblemFragment extends Fragment implements RestCallback<Problem> {
+    public static interface CreateProblemFragmentCallbacks {
+        void onProblemSuccessfullyCreated();
+    }
 
     private static final int RESULT_CODE_CAPTURE = 0x01;
 
@@ -52,6 +56,23 @@ public class CreateProblemFragment extends Fragment implements RestCallback<Prob
     EditText description;
 
     private CaptureRequest captureRequest;
+    private CreateProblemFragmentCallbacks callbacks;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            callbacks = (CreateProblemFragmentCallbacks) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callbacks = null;
+    }
 
     @AfterViews
     void afterViews() {
@@ -93,8 +114,12 @@ public class CreateProblemFragment extends Fragment implements RestCallback<Prob
     }
 
     @Override
-    public void onSuccess(Problem response) {
+    public void onSuccess(Problem problem) {
         // TODO handle successful problem creation
+        if (callbacks != null) {
+            callbacks.onProblemSuccessfullyCreated();
+        }
+
     }
 
     @Override
