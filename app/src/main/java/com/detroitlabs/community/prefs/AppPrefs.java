@@ -34,6 +34,10 @@ public class AppPrefs {
         prefs.user().put(userJsonString);
     }
 
+    public void clearUser() {
+        prefs.user().put(null);
+    }
+
     public boolean isUserSignedIn() {
         return getUser() != null;
     }

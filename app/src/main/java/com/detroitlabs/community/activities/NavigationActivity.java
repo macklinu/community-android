@@ -17,6 +17,7 @@ import com.detroitlabs.community.managers.LocationManager.OnLocationReceivedList
 import com.detroitlabs.community.managers.MarkerMaker;
 import com.detroitlabs.community.managers.MarkerMaker.OnProblemClickedListener;
 import com.detroitlabs.community.model.Problem;
+import com.detroitlabs.community.prefs.AppPrefs;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -32,14 +33,22 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.detroitlabs.community.fragments.CreateProblemFragment.CreateProblemFragmentCallbacks;
+import static com.detroitlabs.community.fragments.NavigationDrawerFragment.NavigationDrawerCallbacks;
+
 @EActivity(R.layout.activity_navigation)
-public class NavigationActivity extends BaseActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, OnLocationReceivedListener {
+public class NavigationActivity extends BaseActivity implements
+        NavigationDrawerCallbacks,
+        OnLocationReceivedListener,
+        CreateProblemFragmentCallbacks{
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence title;
+
+    @Bean
+    AppPrefs appPrefs;
 
     @FragmentById(R.id.navigation_drawer)
     NavigationDrawerFragment drawerFragment;
@@ -97,6 +106,20 @@ public class NavigationActivity extends BaseActivity
     @Override
     public void onReportProblemClicked() {
         changeFragment(new CreateProblemFragment_(), true);
+    }
+
+    @Override
+    public void onLogOutClicked() {
+        appPrefs.clearUser();
+        RegistrationActivity_
+                .intent(this)
+                .start();
+        finish();
+    }
+
+    @Override
+    public void onProblemSuccessfullyCreated() {
+        changeFragment(mapFragment, false);
     }
 
     public void restoreActionBar() {

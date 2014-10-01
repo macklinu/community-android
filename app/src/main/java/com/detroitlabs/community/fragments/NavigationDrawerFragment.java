@@ -26,6 +26,7 @@ import com.detroitlabs.community.R;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -257,11 +258,14 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
-        if (item.getItemId() == R.id.action_example) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    @OptionsItem(R.id.action_log_out)
+    void onLogOutClick() {
+        if (callbacks != null) {
+            callbacks.onLogOutClicked();
+        }
     }
 
     private void closeDrawer() {
@@ -294,5 +298,6 @@ public class NavigationDrawerFragment extends Fragment {
          */
         void onNavigationDrawerItemSelected(int position);
         void onReportProblemClicked();
+        void onLogOutClicked();
     }
 }

@@ -11,7 +11,7 @@ public class MapTimer {
     private Timer mapTimer;
 
     public static interface OnMapReadyListener {
-        void onMapReady(GoogleMap map);
+        void onMapReady(GoogleMap googleMap);
     }
 
     private MapView mapView;
@@ -36,7 +36,7 @@ public class MapTimer {
 
         if (isMapReady()) {
             if (listener != null) {
-                listener.onMapReady(mapView != null ? mapView.getMap() : mapFragment.getMap());
+                listener.onMapReady(mapView != null ? mapView.getMap() :mapFragment.getMap());
                 destroyTimer();
             }
         } else {

@@ -1,8 +1,12 @@
 package com.detroitlabs.community.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class Event {
+public class Event implements Parcelable {
     private int id;
     private int problemId;
     private long startTime;
@@ -38,4 +42,44 @@ public class Event {
     public List<Comment> getComments() {
         return comments;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeInt(this.problemId);
+        dest.writeLong(this.startTime);
+        dest.writeLong(this.endTime);
+        dest.writeInt(this.userId);
+        dest.writeString(this.description);
+        dest.writeList(this.comments);
+    }
+
+    public Event() {
+    }
+
+    private Event(Parcel in) {
+        this.id = in.readInt();
+        this.problemId = in.readInt();
+        this.startTime = in.readLong();
+        this.endTime = in.readLong();
+        this.userId = in.readInt();
+        this.description = in.readString();
+        this.comments = new ArrayList<Comment>();
+        in.readList(this.comments, Comment.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
+        public Event createFromParcel(Parcel source) {
+            return new Event(source);
+        }
+
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
 }
