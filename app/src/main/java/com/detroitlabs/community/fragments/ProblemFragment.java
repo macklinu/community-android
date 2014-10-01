@@ -54,7 +54,7 @@ public class ProblemFragment extends Fragment{
         eventsList.setOnItemClickListener(new OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                ((BaseActivity)getActivity()).changeFragment(EventDetailsFragment_.builder().event((Event)parent.getAdapter().getItem(position)).build(), true);
+                ((BaseActivity)getActivity()).changeFragment(EventDetailsFragment_.builder().problem(problem).event((Event)parent.getAdapter().getItem(position)).build(), true);
             }
         });
         eventsList.setAdapter(adapter);

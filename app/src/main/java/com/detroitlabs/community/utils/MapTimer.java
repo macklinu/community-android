@@ -51,9 +51,11 @@ public class MapTimer {
     }
 
     private void destroyTimer() {
-        mapTimer.cancel();
-        mapTimer.purge();
-        mapTimer = null;
+        if (mapTimer != null) {
+            mapTimer.cancel();
+            mapTimer.purge();
+            mapTimer = null;
+        }
     }
 
     private boolean isMapReady() {

@@ -5,12 +5,14 @@ import android.app.Fragment;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.detroitlabs.community.R;
 import com.detroitlabs.community.api.RestApi;
 import com.detroitlabs.community.api.RestCallback;
+import com.detroitlabs.community.managers.MarkerMaker;
 import com.detroitlabs.community.model.Comment;
 import com.detroitlabs.community.model.Event;
 import com.detroitlabs.community.model.Problem;
@@ -20,6 +22,7 @@ import com.detroitlabs.community.utils.MapTimer;
 import com.detroitlabs.community.utils.SnoopLogg;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 
 import org.androidannotations.annotations.AfterViews;
@@ -32,6 +35,8 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.joda.time.DateTime;
 import org.springframework.web.client.RestClientException;
+
+import java.util.ArrayList;
 
 import static android.view.View.GONE;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_SEND;
@@ -52,7 +57,7 @@ public class EventDetailsFragment extends Fragment implements OnMapReadyListener
     RestApi api;
 
     @ViewById
-    MapView map;
+    FrameLayout mapContainer;
 
     @ViewById
     TextView description;
@@ -76,9 +81,17 @@ public class EventDetailsFragment extends Fragment implements OnMapReadyListener
     Event event;
     private ArrayAdapter<Comment> adapter;
 
+    MapFragment mapFragment;
+
     @AfterViews
     void afterViews() {
-        new MapTimer(map, this);
+
+        mapFragment = new MapFragment();
+        new MapTimer(mapFragment, this).setUpMap();
+        getFragmentManager().beginTransaction().replace(mapContainer.getId(),mapFragment).commit();
+        zoomMap(mapFragment.getMap());
+
+
         description.setText(event.getDescription());
         startTime.setText("Start time: " + new DateTime(event.getStartTime()).toString(DATE_PATTERN));
         endTime.setText("End time: " + new DateTime(event.getEndTime()).toString(DATE_PATTERN));
@@ -109,10 +122,22 @@ public class EventDetailsFragment extends Fragment implements OnMapReadyListener
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        zoomMap(googleMap);
+    }
+
+    @UiThread
+    protected void zoomMap(GoogleMap googleMap) {
         if (problem == null) {
-            map.setVisibility(GONE);
-        } else {
+            mapContainer.setVisibility(GONE);
+        } else if (googleMap != null){
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Problem.latLngFrom(problem), 13));
+
+            MarkerMaker markerMaker = new MarkerMaker(mapFragment.getMap(), new ArrayList<Problem>(){{add(problem);}}, new MarkerMaker.OnProblemClickedListener(){
+                @Override
+                public void onProblemClicked(Problem problem){
+                }
+            });
+            markerMaker.populate();
         }
     }
 
