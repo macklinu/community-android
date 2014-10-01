@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.detroitlabs.community.R;
 import com.detroitlabs.community.api.RestApi;
-import com.detroitlabs.community.model.Comment;
 import com.detroitlabs.community.model.Event;
 import com.detroitlabs.community.model.Problem;
 import com.detroitlabs.community.utils.MapTimer;
@@ -20,6 +19,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.joda.time.DateTime;
 
@@ -55,10 +55,9 @@ public class EventDetailsFragment extends Fragment implements OnMapReadyListener
 
     @AfterViews
     void afterViews() {
-        api.getEventsByProblemId(problem.getId(), this);
+        //api.getEventsByProblemId(problem.getId(), this);
     }
-
-    @Override
+    
     @UiThread
     public void onSuccess(Event event) {
         new MapTimer(map, this);
