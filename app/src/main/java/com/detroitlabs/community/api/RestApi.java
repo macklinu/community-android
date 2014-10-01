@@ -67,9 +67,9 @@ public class RestApi {
     }
 
     @Background
-    public void getEventByProblemId(int id, RestCallback<Event> callback) {
+    public void getEventsByProblemId(int id, RestCallback<List<Event>> callback) {
         try {
-            final Event response = restClient.getEventByProblemId(id);
+            final List<Event> response = restClient.getEventsByProblemId(id);
             callback.onSuccess(response);
         } catch (Exception e) {
             callback.onFailure(e);
