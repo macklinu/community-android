@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.detroitlabs.community.adapters.FragmentClassEntry;
 import com.detroitlabs.community.fragments.NavigationDrawerFragment;
 import com.detroitlabs.community.R;
+import com.google.android.gms.maps.MapFragment;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -26,6 +27,8 @@ public class NavigationActivity extends BaseActivity
 
     @FragmentById(R.id.navigation_drawer)
     NavigationDrawerFragment drawerFragment;
+
+    @FragmentById MapFragment mapFragment;
 
     @AfterViews
     void afterViews() {
