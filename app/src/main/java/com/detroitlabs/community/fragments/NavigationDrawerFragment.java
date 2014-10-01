@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.detroitlabs.community.R;
+import com.detroitlabs.community.activities.UploadProblemActivity_;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -250,7 +251,9 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
+            UploadProblemActivity_
+                    .intent(this)
+                    .start();
             return true;
         }
 
