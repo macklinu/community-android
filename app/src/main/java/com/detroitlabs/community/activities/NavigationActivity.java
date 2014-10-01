@@ -72,8 +72,7 @@ public class NavigationActivity extends BaseActivity implements
 
     @AfterViews
     void afterViews() {
-        title = getTitle();
-
+        title ="Welcome " + appPrefs.getUser().getName() + "!";
         // Set up the drawer.
         drawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
