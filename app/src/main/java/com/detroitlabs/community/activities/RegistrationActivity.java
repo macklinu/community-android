@@ -70,7 +70,6 @@ public class RegistrationActivity extends Activity implements RestCallback<User>
 
     @Override
     public void onSuccess(User user) {
-        appPrefs.setUser(user);
         goToNavigationActivity();
     }
 
