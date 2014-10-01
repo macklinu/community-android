@@ -1,5 +1,7 @@
 package com.detroitlabs.community.model;
 
+import java.util.List;
+
 public class Event {
     private int id;
     private int problemId;
@@ -7,6 +9,7 @@ public class Event {
     private long endTime;
     private int userId;
     private String description;
+    private List<Comment> comments;
 
     public int getId() {
         return id;
@@ -30,5 +33,9 @@ public class Event {
 
     public String getDescription() {
         return description;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
     }
 }

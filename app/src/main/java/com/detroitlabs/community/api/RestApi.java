@@ -67,6 +67,16 @@ public class RestApi {
     }
 
     @Background
+    public void getEventByProblemId(int id, RestCallback<Event> callback) {
+        try {
+            final ResponseObject<Event> response = restClient.getEventByProblemId(id);
+            callback.onSuccess(response.getResponse());
+        } catch (Exception e) {
+            callback.onFailure(e);
+        }
+    }
+
+    @Background
     public void getProblemsByLocation(double lat, double lng, RestCallback<List<Problem>> callback) {
         try {
             final ResponseObject<List<Problem>> response = restClient.getProblemsByLocation(lat, lng);

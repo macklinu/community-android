@@ -1,6 +1,11 @@
 package com.detroitlabs.community.model;
 
-public class Problem {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.android.gms.maps.model.LatLng;
+
+public class Problem implements Parcelable {
     private int id;
     private double lat;
     private double lng;
@@ -15,6 +20,10 @@ public class Problem {
         description = builder.description;
         imageUrl = builder.imageUrl;
         userId = builder.userId;
+    }
+
+    public static LatLng latLngFrom(Problem problem) {
+        return new LatLng(problem.getLat(), problem.getLng());
     }
 
     public int getId() {
@@ -82,4 +91,39 @@ public class Problem {
             return new Problem(this);
         }
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeDouble(this.lat);
+        dest.writeDouble(this.lng);
+        dest.writeString(this.description);
+        dest.writeString(this.imageUrl);
+        dest.writeString(this.userId);
+    }
+
+    private Problem(Parcel in) {
+        this.id = in.readInt();
+        this.lat = in.readDouble();
+        this.lng = in.readDouble();
+        this.description = in.readString();
+        this.imageUrl = in.readString();
+        this.userId = in.readString();
+    }
+
+    public static final Parcelable.Creator<Problem> CREATOR = new Parcelable.Creator<Problem>() {
+        public Problem createFromParcel(Parcel source) {
+            return new Problem(source);
+        }
+
+        public Problem[] newArray(int size) {
+            return new Problem[size];
+        }
+    };
 }

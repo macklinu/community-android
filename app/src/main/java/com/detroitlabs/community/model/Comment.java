@@ -26,4 +26,9 @@ public class Comment {
     public int getEventId() {
         return eventId;
     }
+
+    @Override
+    public String toString() {
+        return message == null ? "null" : message;
+    }
 }

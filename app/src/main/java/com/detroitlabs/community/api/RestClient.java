@@ -35,6 +35,9 @@ public interface RestClient extends RestClientHeaders, RestClientSupport, RestCl
     @Get("/problems?lat={lat}&lng={lng}")
     ResponseObject<List<Problem>> getProblemsByLocation(double lat, double lng);
 
+    @Get("/events/{id}")
+    ResponseObject<Event> getEventByProblemId(int id);
+
     @Delete("/problems/{id}")
     void deleteProblem(int id);
 
