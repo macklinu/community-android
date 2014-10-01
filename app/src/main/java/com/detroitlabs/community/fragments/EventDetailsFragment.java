@@ -17,7 +17,6 @@ import com.detroitlabs.community.utils.SnoopLogg;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.model.LatLng;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -55,7 +54,7 @@ public class EventDetailsFragment extends Fragment implements RestCallback<Event
 
     @AfterViews
     void afterViews() {
-        api.getEventByProblemId(problem.getId(), this);
+        //api.getEventsByProblemId(problem.getId(), this);
     }
 
     @Override

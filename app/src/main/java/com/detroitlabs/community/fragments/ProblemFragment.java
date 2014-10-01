@@ -8,11 +8,14 @@ import android.widget.Toast;
 
 import com.detroitlabs.community.R;
 import com.detroitlabs.community.adapters.EventAdapter;
+import com.detroitlabs.community.api.RestApi;
 import com.detroitlabs.community.api.RestCallback;
 import com.detroitlabs.community.model.Event;
 import com.detroitlabs.community.model.Problem;
+import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -25,6 +28,7 @@ public class ProblemFragment extends Fragment{
     @ViewById TextView  description;
     @ViewById ListView  eventsList;
     @ViewById ImageView problemPhoto;
+    @Bean RestApi api;
 
     private Problem problem;
     private EventAdapter adapter;
@@ -35,9 +39,11 @@ public class ProblemFragment extends Fragment{
 
     @AfterViews
     public void onAfterViews(){
+        Picasso.with(getActivity()).load(problem.getImageUrl()).into(problemPhoto);
         description.setText(problem.getDescription());
         adapter = new EventAdapter(getActivity(), new ArrayList<Event>());
         eventsList.setAdapter(adapter);
+        api.getEventsByProblemId(problem.getId(), eventsCallback);
     }
 
     RestCallback<List<Event>> eventsCallback = new RestCallback<List<Event>>(){

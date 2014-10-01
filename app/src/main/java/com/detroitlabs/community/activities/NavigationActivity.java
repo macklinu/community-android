@@ -2,7 +2,6 @@ package com.detroitlabs.community.activities;
 
 import android.app.ActionBar;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -11,9 +10,12 @@ import com.detroitlabs.community.api.RestApi;
 import com.detroitlabs.community.api.RestCallback;
 import com.detroitlabs.community.fragments.CreateProblemFragment_;
 import com.detroitlabs.community.fragments.NavigationDrawerFragment;
+import com.detroitlabs.community.fragments.ProblemFragment;
+import com.detroitlabs.community.fragments.ProblemFragment_;
 import com.detroitlabs.community.managers.LocationManager;
 import com.detroitlabs.community.managers.LocationManager.OnLocationReceivedListener;
 import com.detroitlabs.community.managers.MarkerMaker;
+import com.detroitlabs.community.managers.MarkerMaker.OnProblemClickedListener;
 import com.detroitlabs.community.model.Problem;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -146,11 +148,23 @@ public class NavigationActivity extends BaseActivity
         locationManager.onStart();
     }
 
+    @UiThread
+    public void populateMap(List<Problem> response){
+        MarkerMaker markerMaker = new MarkerMaker(mapFragment.getMap(), response, new OnProblemClickedListener(){
+            @Override
+            public void onProblemClicked(Problem problem){
+                ProblemFragment pf = new ProblemFragment_();
+                pf.setProblem(problem);
+                changeFragment(pf,true);
+            }
+        });
+        markerMaker.populate();
+    }
+
     RestCallback<List<Problem>> problemsCallback = new RestCallback<List<Problem>>(){
         @Override
         public void onSuccess(List<Problem> response){
-            MarkerMaker markerMaker = new MarkerMaker(mapFragment.getMap(), response);
-            markerMaker.populate();
+            populateMap(response);
         }
 
         @Override
