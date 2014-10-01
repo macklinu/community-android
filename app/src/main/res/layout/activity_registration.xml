@@ -8,13 +8,21 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.detroitlabs.community.activities.LoginActivity$PlaceholderFragment">
 
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="First and last name"
+        android:inputType="text"/>
+
 
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email address"
-        android:inputType="textEmailAddress"/>
+        android:inputType="textEmailAddress"
+        android:layout_below="@+id/name"/>
 
     <EditText
         android:id="@+id/password"

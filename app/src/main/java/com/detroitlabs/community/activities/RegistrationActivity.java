@@ -1,6 +1,7 @@
 package com.detroitlabs.community.activities;
 
 import android.app.Activity;
+import android.util.Log;
 import android.widget.EditText;
 
 import com.detroitlabs.community.R;
@@ -28,6 +29,9 @@ public class RegistrationActivity extends Activity implements RestCallback<User>
     RestApi api;
 
     @ViewById
+    EditText name;
+
+    @ViewById
     EditText username;
 
     @ViewById
@@ -50,28 +54,42 @@ public class RegistrationActivity extends Activity implements RestCallback<User>
     @Click
     void register() {
         try {
-            final String emailString = validateUsername();
+            final String nameString = validateName();
+            final String usernameString = validateUsername();
             final String passwordString = validatePassword();
 
-            // TODO post to API
+            final User user = new User.Builder()
+                    .name(nameString)
+                    .username(usernameString)
+                    .password(passwordString)
+                    .build();
+
+            api.register(user, this);
 
         } catch (RegistrationValidationException e) {
             e.getEditText().setError(e.getMessage());
         }
-
     }
 
     @Override
-    public void onSuccess(User response) {
-        /* TODO set password from response? */
-        /* TODO set username from response? */
-
+    public void onSuccess(User user) {
+        appPrefs.setUser(user);
         goToNavigationActivity();
     }
 
     @Override
     public void onFailure(Exception e) {
+        Log.e(RegistrationActivity.class.getName(), "RestApi#register error", e);
     }
+
+    private String validateName() throws RegistrationValidationException {
+        final String nameText = name.getText().toString();
+        if (nameText != null && !nameText.isEmpty()) {
+            return nameText;
+        }
+        throw new RegistrationValidationException(name, "Name must not be empty");
+    }
+
 
     private String validateUsername() throws RegistrationValidationException {
         final String usernameText = username.getText().toString();

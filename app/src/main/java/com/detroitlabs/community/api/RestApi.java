@@ -32,9 +32,8 @@ public class RestApi {
 
     @AfterInject
     void afterInject() {
-        // restClient.setHttpBasicAuth(appPrefs.getUsername(), appPrefs.getPassword());
+        setBasicAuth();
         updateGsonConverter();
-
     }
 
     @Background
@@ -90,8 +89,10 @@ public class RestApi {
     @Background
     public void login(User user, RestCallback<User> callback) {
         try {
-            final ResponseObject<User> response = restClient.login(user);
-            callback.onSuccess(response.getResponse());
+            final User response = restClient.login(user).getResponse();
+            appPrefs.setUser(response);
+            setBasicAuth();
+            callback.onSuccess(response);
         } catch (Exception e) {
             callback.onFailure(e);
         }
@@ -100,11 +101,19 @@ public class RestApi {
     @Background
     public void register(User user, RestCallback<User> callback) {
         try {
-            final ResponseObject<User> response = restClient.register(user);
-            restClient.setHttpBasicAuth(user.getUsername(), user.getPassword());
-            callback.onSuccess(response.getResponse());
+            final User response = restClient.register(user).getResponse();
+            appPrefs.setUser(response);
+            setBasicAuth();
+            callback.onSuccess(response);
         } catch (Exception e) {
             callback.onFailure(e);
+        }
+    }
+
+    private void setBasicAuth() {
+        final User user = appPrefs.getUser();
+        if (user != null) {
+            restClient.setHttpBasicAuth(user.getUsername(), user.getPassword());
         }
     }
 
